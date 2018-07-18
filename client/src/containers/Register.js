@@ -32,7 +32,7 @@ class Register extends Component {
 
     registerUser = (e) => {
         e.preventDefault();
-        axios.post('http://localhost:3003/registerUser', {
+        axios.post('http://localhost:3004/registerUser', {
             first_name: this.state.first_name,
             last_name: this.state.last_name,
             email: this.state.email,

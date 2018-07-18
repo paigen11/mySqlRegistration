@@ -28,7 +28,7 @@ class UpdateProfile extends Component {
         this.setState({ loadingUser : true });
         console.log('loading user data');
 
-        axios.get('http://localhost:3003/findUser', {
+        axios.get('http://localhost:3004/findUser', {
             params: {
                 username: this.props.match.params.username
             }
@@ -45,6 +45,9 @@ class UpdateProfile extends Component {
             })
             .catch((error) => {
                 console.log(error.data);
+                this.setState({
+                    loadingUser: false
+                })
             })
     }
 

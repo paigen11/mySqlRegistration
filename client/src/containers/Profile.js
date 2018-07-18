@@ -28,7 +28,7 @@ class Profile extends Component {
     }
 
     async componentDidMount(){
-      await axios.get('http://localhost:3003/findUser', {
+      await axios.get('http://localhost:3004/findUser', {
            params: {
                username: this.props.match.params.username
            }

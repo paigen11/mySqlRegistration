@@ -4,7 +4,7 @@ import bodyParser from 'body-parser';
 import logger from 'morgan';
 const app = express();
 
-const API_PORT = process.env.API_PORT || 3000;
+const API_PORT = process.env.API_PORT || 3004;
 
 app.use(Cors());
 app.use(bodyParser.urlencoded({ extended: true }));

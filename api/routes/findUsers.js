@@ -1,4 +1,4 @@
-import User from '../sequelize';
+import User from '../sqliteSequelize';
 
 module.exports = (app) => {
     app.get('/findUser', (req, res) => {
