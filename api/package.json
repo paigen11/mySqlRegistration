@@ -25,9 +25,9 @@
     "cors": "^2.8.4",
     "express": "^4.16.3",
     "morgan": "^1.9.0",
-    "mysql2": "^1.5.3",
     "nodemon": "^1.17.5",
     "sequelize": "^4.38.0",
-    "sequelize-cli": "^4.0.0"
+    "sequelize-cli": "^4.0.0",
+    "sqlite3": "^4.0.2"
   }
 }
