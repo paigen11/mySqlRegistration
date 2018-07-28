@@ -59,7 +59,7 @@ class UpdateProfile extends Component {
 
     updateUser = (e) => {
         e.preventDefault();
-        axios.put('http://localhost:3003/updateUser', {
+        axios.put('http://localhost:3004/updateUser', {
             first_name: this.state.first_name,
             last_name: this.state.last_name,
             email: this.state.last_name,

@@ -39,7 +39,7 @@ class Login extends Component {
         })
             .then(( response ) => {
                 console.log(response.data);
-                if(response.data === 'bad username or password'){
+                if(response.data === 'bad username' || response.data === 'passwords do not match'){
                     this.setState({
                         showError: true
                     })
@@ -51,7 +51,10 @@ class Login extends Component {
                 }
             })
             .catch(( error ) => {
-                console.log(error.data)
+                console.log(error.data);
+                this.setState({
+                    showError: true
+                })
             })
     };
 

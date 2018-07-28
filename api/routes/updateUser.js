@@ -1,5 +1,7 @@
 import User from '../sqliteSequelize';
+import bcrypt from 'bcrypt';
 
+const BCRYPT_SALT_ROUNDS = 12;
 module.exports = (app) => {
     app.put('/updateUser', (req, res) => {
         User.findOne({
@@ -9,13 +11,18 @@ module.exports = (app) => {
         })
             .then(user  => {
             if (user != null) {
-                user.update({
-                    first_name: req.body.first_name,
-                    last_name: req.body.last_name,
-                    email: req.body.email,
-                    username: req.body.username,
-                    password: req.body.password
-                })
+                console.log('user found in db');
+                bcrypt.hash(req.body.password, BCRYPT_SALT_ROUNDS)
+                    .then(function(hashedPassword) {
+                        console.log(hashedPassword);
+                        user.update({
+                            first_name: req.body.first_name,
+                            last_name: req.body.last_name,
+                            email: req.body.email,
+                            username: req.body.username,
+                            password: hashedPassword
+                        })
+                    })
                     .then(() => {
                         console.log('user updated');
                         res.json('user updated')
