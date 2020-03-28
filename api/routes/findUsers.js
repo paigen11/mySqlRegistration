@@ -29,8 +29,8 @@ module.exports = app => {
           }
         })
         .catch(err => {
-          console.log('problem communicating with db');
-          res.status(500).json(err);
+          console.log('problem communicating with db', err.message);
+          res.status(500).json(err.message);
         });
     } else {
       return res.status(500).send({

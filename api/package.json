@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server.js --exec babel-node --presets es2015"
+    "start": "nodemon --inspect=0.0.0.0:9229 server.js --exec babel-node --presets es2015"
   },
   "repository": {
     "type": "git",
