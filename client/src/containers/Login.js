@@ -56,7 +56,6 @@ class Login extends Component {
   };
 
   loginUser = e => {
-
     e.preventDefault();
 
     let loginErrMsg;

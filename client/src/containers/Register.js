@@ -83,10 +83,9 @@ class Register extends Component {
         registerLogin: false,
         showError: true
       });
-      console.log("registerErrorMsg", registerErrorMsg);
 
     } else {
-console.log("this.state", this.state);
+
       axios
         .post('http://localhost:3003/registerUser', {
           first_name: this.state.first_name,
@@ -126,7 +125,6 @@ console.log("this.state", this.state);
   };
 
   render() {
-
     const {
       first_name,
       last_name,
@@ -141,12 +139,10 @@ console.log("this.state", this.state);
     } = this.state;
 
     if (messageFromServer === '') {
-      console.log("1");
       return (
         <div>
           <HeaderBar title={title} />
           <form className="profile-form" onSubmit={this.registerUser}>
-
             <TextField
               style={inputStyle}
               id="first_name"
@@ -225,7 +221,6 @@ console.log("this.state", this.state);
         </div>
       );
     } else if (messageFromServer === 'user created') {
-      console.log("2");
       return (
         <div>
           <HeaderBar title={title} />
@@ -237,8 +232,6 @@ console.log("this.state", this.state);
           </Button>
         </div>
       );
-    } else {
-      console.log("3");
     }
   }
 }

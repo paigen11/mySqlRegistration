@@ -154,7 +154,6 @@ class UpdateProfile extends Component {
     } = this.state;
 
     if (error) {
-
       return (
         <div>
           <HeaderBar title={title} />
@@ -168,22 +167,16 @@ class UpdateProfile extends Component {
           </Button>
         </div>
       );
-
     } else if (loadingUser !== false) {
-
       return (
         <div>
           <HeaderBar title={title} />
           <p style={loading}>Loading user data...</p>
         </div>
       );
-
     } else if (loadingUser === false && updated === true) {
-
       return <Redirect to={`/userProfile/${username}`} />;
-
     } else if (loadingUser === false) {
-
       return (
         <div>
           <HeaderBar title={title} />
