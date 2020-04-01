@@ -70,14 +70,16 @@ class Login extends Component {
     if (loginErrMsg) {
 
       this.setState({
-        loginErrMsg:loginErrMsg,
+        loginErrorMsg:loginErrMsg,
         showError: true
       });
 
     } else {
-console.log("calling :3003/loginUser");
+
+      console.log("calling :3003/loginUser");
+
       axios
-        .get('http://localhost:3003/loginUser', {
+        .post('http://localhost:3003/loginUser', {
           params: {
             username: this.state.username,
             password: this.state.password,
@@ -85,10 +87,10 @@ console.log("calling :3003/loginUser");
         })
         .then(response => {
           console.log("response.data", response.data);
-          if (response.data.message !== 'success') {
+          if (response.status !== 200) {
             this.setState({
               showError: true,
-              loginErrMsg: response.data.message
+              loginErrorMsg: response.data.message
             });
           } else {
             localStorage.setItem('jwtToken', response.data.token);
@@ -99,7 +101,11 @@ console.log("calling :3003/loginUser");
           }
         })
         .catch(error => {
-          console.log("response from loginUser", error);
+          console.log("response from loginUser  ", error.response.data.message);
+          this.setState({
+            showError: true,
+            loginErrorMsg: error.response.data.message
+          });
         });
     }
   };

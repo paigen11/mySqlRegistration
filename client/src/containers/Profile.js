@@ -162,6 +162,7 @@ class Profile extends Component {
     } else if (deleted) {
       return <Redirect to="/" />;
     } else {
+
       return (
         <div>
           <HeaderBar title={title} />
@@ -217,6 +218,7 @@ class Profile extends Component {
         </div>
       );
     }
+
   }
 }
 

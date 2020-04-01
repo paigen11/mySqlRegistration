@@ -4,15 +4,15 @@ import jwtSecret from '../config/jwtConfig';
 import jwt from 'jsonwebtoken';
 
 module.exports = app => {
-  debugger;
-  app.get('/loginUser', (req, res) => {
+
+  app.post('/loginUser', (req, res) => {
     User.findOne({
       where: {
-        username: req.query.username,
+        username: req.body.params.username,
       },
     })
       .then(user => {
-        if (req.query.password == false) {
+        if (req.body.params.password == false) {
           console.log('password required');
           res
             .status(400)
@@ -27,10 +27,10 @@ module.exports = app => {
           res.status(400).send({
             auth: false,
             token: null,
-            message: 'not finding that username',
+            message: "Not finding username '" + req.body.params.username + "'."
           });
         } else {
-          bcrypt.compare(req.query.password, user.password)
+          bcrypt.compare(req.body.params.password, user.password)
             .then(response => {
               if (response === true) {
                 const token = jwt.sign({ id: user.username }, jwtSecret.jwtSecret, {
@@ -45,11 +45,11 @@ module.exports = app => {
                     message: 'success'
                   });
               } else {
-                console.log('passwords do not match');
+                console.log('incorrect password');
                 res.status(400).send({
                   auth: false,
                   token: null,
-                  message: 'passwords do not match',
+                  message: 'Incorrect password. ',
                 });
               }
             }).catch(err => {
@@ -60,8 +60,8 @@ module.exports = app => {
       })
       .catch(err => {
         console.log('bcrypt.compare err');
-        console.log(err);
-        res.status(500).json(err);
+        console.log(err.message);
+        res.status(500).json(err.message);
       });
   });
 };

@@ -86,7 +86,7 @@ class Register extends Component {
       console.log("registerErrorMsg", registerErrorMsg);
 
     } else {
-
+console.log("this.state", this.state);
       axios
         .post('http://localhost:3003/registerUser', {
           first_name: this.state.first_name,
