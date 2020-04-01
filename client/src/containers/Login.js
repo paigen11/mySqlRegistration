@@ -58,36 +58,59 @@ class Login extends Component {
   loginUser = e => {
     e.preventDefault();
 
-    axios
-      .get('http://localhost:3003/loginUser', {
-        params: {
-          username: this.state.username,
-          password: this.state.password,
-        },
-      })
-      .then(response => {
-        if (
-          response.data === 'bad username' ||
-          response.data === 'passwords do not match'
-        ) {
+    let loginErrMsg;
+    if (!this.state.username) {
+      loginErrMsg = "username is required. ";
+    }
+    if (!this.state.password) {
+      loginErrMsg+= "password is required. ";
+    }
+
+    if (loginErrMsg) {
+
+      this.setState({
+        loginErrorMsg:loginErrMsg,
+        showError: true
+      });
+
+    } else {
+
+      console.log("calling :3003/loginUser");
+
+      axios
+        .post('http://localhost:3003/loginUser', {
+          params: {
+            username: this.state.username,
+            password: this.state.password,
+          },
+        })
+        .then(response => {
+          console.log("response.data", response.data);
+          if (response.status !== 200) {
+            this.setState({
+              showError: true,
+              loginErrorMsg: response.data.message
+            });
+          } else {
+            localStorage.setItem('jwtToken', response.data.token);
+            this.setState({
+              loggedIn: true,
+              showError: false,
+            });
+          }
+        })
+        .catch(error => {
+          console.log("response from loginUser  ", error.response.data.message);
           this.setState({
             showError: true,
+            loginErrorMsg: error.response.data.message
           });
-        } else {
-          localStorage.setItem('jwtToken', response.data.token);
-          this.setState({
-            loggedIn: true,
-            showError: false,
-          });
-        }
-      })
-      .catch(error => {
-        console.log(error.data);
-      });
+        });
+    }
   };
 
   render() {
-    const { username, password, showError, loggedIn } = this.state;
+    const { username, password, showError, loggedIn, loginErrorMsg } = this.state;
     if (!loggedIn) {
       return (
         <div>
@@ -122,8 +145,7 @@ class Login extends Component {
           {showError && (
             <div>
               <p>
-                That username or password isn't recognized. Please try again or
-                register now.
+                {loginErrorMsg}
               </p>
               <Button
                 style={registerButton}

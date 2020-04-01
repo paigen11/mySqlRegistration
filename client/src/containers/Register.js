@@ -49,7 +49,8 @@ class Register extends Component {
       messageFromServer: '',
       showError: false,
       registerError: false,
-      loginError: false,
+      showLoginBtn: false,
+      registerErrorMsg: ''
     };
   }
 
@@ -61,40 +62,66 @@ class Register extends Component {
 
   registerUser = e => {
     e.preventDefault();
-    axios
-      .post('http://localhost:3003/registerUser', {
-        first_name: this.state.first_name,
-        last_name: this.state.last_name,
-        email: this.state.email,
-        username: this.state.username,
-        password: this.state.password,
-      })
-      .then(response => {
-        console.log(response.data);
-        if (response.data === 'username already taken') {
-          this.setState({
-            showError: true,
-            loginError: true,
-            registerError: false,
-          });
-        } else if (response.data === 'username and password required') {
-          this.setState({
-            showError: true,
-            registerError: true,
-            loginError: false,
-          });
-        } else {
-          this.setState({
-            messageFromServer: response.data,
-            showError: false,
-            loginError: false,
-            registerError: false,
-          });
-        }
-      })
-      .catch(error => {
-        console.log(error.data);
+    let registerErrorMsg = '';
+    // if (!this.state.first_name) {
+    //   registerErrorMsg = "First name is required. ";
+    // }
+    // if (!this.state.last_name) {
+    //   registerErrorMsg+= "Last name is required. "
+    // }
+    if (!this.state.username) {
+      registerErrorMsg+= "username is required. ";
+    }
+    if (!this.state.password) {
+      registerErrorMsg+= "password is required. ";
+    }
+    if (registerErrorMsg) {
+
+      this.setState({
+        registerErrorMsg:registerErrorMsg,
+        registerError: true,
+        registerLogin: false,
+        showError: true
       });
+
+    } else {
+
+      axios
+        .post('http://localhost:3003/registerUser', {
+          first_name: this.state.first_name,
+          last_name: this.state.last_name,
+          email: this.state.email,
+          username: this.state.username,
+          password: this.state.password,
+        })
+        .then(response => {
+          console.log("rd", response.data);
+          if (response.data === 'username already taken') {
+            this.setState({
+              showError: true,
+              showLoginBtn: true,
+              registerError: true,
+            });
+          // } else if (response.data === 'username and password required') {
+          //   this.setState({
+          //     showError: true,
+          //     registerError: true,
+          //     loginError: false,
+          //   });
+          } else {
+            this.setState({
+              messageFromServer: response.data.message,
+              showError: false,
+              showLoginBtn: false,
+              registerError: false,
+            });
+          }
+        })
+        .catch(error => {
+          console.log(error.data);
+        });
+    }
+
   };
 
   render() {
@@ -106,8 +133,9 @@ class Register extends Component {
       password,
       messageFromServer,
       showError,
-      loginError,
       registerError,
+      registerErrorMsg,
+      showLoginBtn
     } = this.state;
 
     if (messageFromServer === '') {
@@ -166,17 +194,17 @@ class Register extends Component {
             </Button>
           </form>
           {showError === true &&
-            registerError === true && (
-              <div>
-                <p>Username and password are required fields.</p>
-              </div>
-            )}
+          registerError === true &&
+          registerErrorMsg && (
+            <div>
+              <p>{registerErrorMsg}</p>
+            </div>
+          )}
           {showError === true &&
-            loginError === true && (
+            showLoginBtn === true && (
               <div>
                 <p>
-                  That username is already taken. Please choose another or
-                  login.
+                  That username is already taken. Please choose another or login.
                 </p>
                 <Button style={loginButton} variant="contained" color="primary">
                   <Link style={linkStyle} to="/login">
